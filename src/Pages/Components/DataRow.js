@@ -2,7 +2,9 @@ import React from "react";
 
 function DataRow({ date, views, clicks, cpc = 0, cpm = 0, color }) {
   return (
-    <div className={`Content  ${color} rounded-r-md flex mb-2 mt-10 `}>
+    <div
+      className={`Content  ${color} rounded-r-md flex mb-2 mt-10 hover:bg-gray-500 hover:cursor-pointer `}
+    >
       <img
         src="https://www.pngall.com/wp-content/uploads/2016/06/Finance-Free-Download-PNG.png"
         alt=""
@@ -11,7 +13,7 @@ function DataRow({ date, views, clicks, cpc = 0, cpm = 0, color }) {
       <div className="infoContent flex justify-between  w-full mx-10">
         <div className="flex flex-col ">
           <h1 className="text-center font-bold">Date:</h1>
-          <h1 className="text-white">{date}</h1>
+          <h1 className="text-white">{date.substring(0, 10)}</h1>
         </div>
         <div className="flex flex-col ">
           <h1 className="text-center font-bold">Views:</h1>

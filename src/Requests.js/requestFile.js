@@ -10,3 +10,12 @@ export const registerPost = async (valuesToRegister) => {
       console.log(`Error while Saving :${error}`);
     });
 };
+
+export const resetData = async (valuesToRegister) => {
+  return axios
+    .get(`${apiLink}/statistics/Reset`)
+    .then((res) => console.log("Data Reset"))
+    .catch((error) => {
+      console.log(`Error while Saving :${error}`);
+    });
+};

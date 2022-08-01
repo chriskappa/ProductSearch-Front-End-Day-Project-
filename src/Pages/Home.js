@@ -1,6 +1,6 @@
 import axios from "axios";
 import React, { useRef, useState, useEffect } from "react";
-import { apiLink, registerPost } from "../Requests.js/requestFile";
+import { apiLink, registerPost, resetData } from "../Requests.js/requestFile";
 import DataRow from "./Components/DataRow";
 
 function Home() {
@@ -83,6 +83,10 @@ function Home() {
     }
     // const isValid = values.map(objectValue => )
   };
+
+  const handleDataReset = () => {
+    resetData().then((res) => setData([]));
+  };
   useEffect(() => {
     fetchData();
   }, []);
@@ -129,7 +133,7 @@ function Home() {
                 />
               </label>
               <h1
-                className="bg-green-500 inline  p-2 px-10 font-bold rounded "
+                className="bg-green-500 inline  p-2 px-10 font-bold rounded hover:cursor-pointer hover:bg-green-800"
                 onClick={handleSubmit}
               >
                 Search
@@ -164,7 +168,6 @@ function Home() {
               </label>
               <label className="relative block mb-5 ">
                 <input
-                  ref={toDate}
                   className="w-3/4 bg-gray-100 text-black text-md    rounded py-1 pl-10 pr-4 focus:outline-none text-center "
                   placeholder="Enter The Cost"
                   type="text"
@@ -173,7 +176,13 @@ function Home() {
                 />
               </label>
               <h1
-                className="bg-green-500 inline  p-2 px-10 font-bold rounded "
+                className="bg-red-500 mr-2 inline  p-2 px-10 font-bold rounded hover:cursor-pointer hover:bg-red-800 "
+                onClick={handleDataReset}
+              >
+                Reset Data
+              </h1>
+              <h1
+                className="bg-green-500 inline  p-2 px-10 font-bold rounded hover:cursor-pointer hover:bg-green-800 "
                 onClick={handleRegister}
               >
                 Register New Data
