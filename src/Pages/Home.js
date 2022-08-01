@@ -1,69 +1,18 @@
 import axios from "axios";
 import React, { useRef, useState, useEffect } from "react";
-import { apiLink } from "../Requests.js/requestFile";
+import { apiLink, registerPost } from "../Requests.js/requestFile";
 import DataRow from "./Components/DataRow";
 
 function Home() {
   const fromDate = useRef();
   const toDate = useRef();
   const [data, setData] = useState([]);
-  //   const data = [
-  //     {
-  //       _id: "62e832a487687de91e0196fd",
-  //       date: "2022-09-19T00:00:00.000Z",
-  //       views: 1343242210,
-  //       clicks: 4324234,
-  //       cost: 43242,
-  //       cpc: 0.009999921373357685,
-  //       cpm: 0.03219225816317967,
-  //     },
-  //     {
-  //       _id: "62e832a987687de91e0196ff",
-  //       date: "2022-09-19T00:00:00.000Z",
-  //       views: 32131241,
-  //       clicks: 423423,
-  //       cost: 5435,
-  //       cpc: 0.012835863899693687,
-  //       cpm: 0.16915001820191136,
-  //     },
-  //     {
-  //       _id: "62e8396ad518139dffb2161e",
-  //       date: "2022-09-19T00:00:00.000Z",
-  //       views: 13213,
-  //       clicks: 3213,
-  //       cost: 45,
-  //       cpc: 0.014005602240896359,
-  //       cpm: 3.4057367743888594,
-  //     },
-  //     {
-  //       _id: "62e8396ad518139dffb2161e",
-  //       date: "2022-09-19T00:00:00.000Z",
-  //       views: 13213,
-  //       clicks: 3213,
-  //       cost: 45,
-  //       cpc: 0.014005602240896359,
-  //       cpm: 3.4057367743888594,
-  //     },
-  //     {
-  //       _id: "62e8396ad518139dffb2161e",
-  //       date: "2022-09-19T00:00:00.000Z",
-  //       views: 13213,
-  //       clicks: 3213,
-  //       cost: 45,
-  //       cpc: 0.014005602240896359,
-  //       cpm: 3.4057367743888594,
-  //     },
-  //     {
-  //       _id: "62e8396ad518139dffb2161e",
-  //       date: "2022-09-19T00:00:00.000Z",
-  //       views: 13213,
-  //       clicks: 3213,
-  //       cost: 45,
-  //       cpc: 0.014005602240896359,
-  //       cpm: 3.4057367743888594,
-  //     },
-  //   ];
-
+  const [postObject, setPostObject] = useState({
+    date: "",
+    views: 0,
+    clicks: 0,
+    cost: 0,
+  });
   const isValidDate = (from, to) => {
     const fromDate = isNaN(Date.parse(from));
     const toDate = isNaN(Date.parse(to));
@@ -96,6 +45,43 @@ function Home() {
       console.log(error);
       alert(error);
     }
+  };
+
+  const handleOnChange = (e) => {
+    setPostObject((prev) => ({ ...prev, [e.target.name]: e.target.value }));
+  };
+
+  const isValidObject = (objectValues) => {
+    // Retrieving All Object Values
+    const values = Object.values(objectValues);
+    // Checking if array is not empty means we found invalid Value So We Dont Try to send nonValid Request and load the server
+    const isValid =
+      values.filter((v) => v === "" || v === 0).length > 0 ? false : true;
+    return isValid;
+  };
+
+  const handleRegister = () => {
+    console.log(postObject);
+
+    if (isValidObject(postObject) && !isNaN(Date.parse(postObject.date))) {
+      registerPost(postObject)
+        .then((res) => {
+          setData((prev) => [
+            {
+              ...postObject,
+              cpc: postObject.cost / postObject.clicks,
+              cpm: postObject.cost / postObject.views,
+            },
+            ...prev,
+          ]);
+        })
+        .catch((error) => console.log(`Something Went Wrong ${error}`));
+
+      console.log(postObject);
+    } else {
+      alert("Please Check Your Inputs");
+    }
+    // const isValid = values.map(objectValue => )
   };
   useEffect(() => {
     fetchData();
@@ -152,41 +138,45 @@ function Home() {
             <form className="w-1/2 " onSubmit={handleSubmit}>
               <label className="relative block mb-5 ">
                 <input
-                  ref={toDate}
                   className="w-3/4 bg-gray-100 text-black text-md    rounded py-1 pl-10 pr-4 focus:outline-none text-center "
                   placeholder="Enter Date "
+                  name="date"
+                  onChange={handleOnChange}
+                />
+              </label>
+              <label className="relative block mb-5 ">
+                <input
+                  className="w-3/4 bg-gray-100 text-black text-md    rounded py-1 pl-10 pr-4 focus:outline-none text-center "
+                  placeholder="Enter Number of Views"
                   type="text"
+                  name="views"
+                  onChange={handleOnChange}
+                />
+              </label>
+              <label className="relative block mb-5 ">
+                <input
+                  className="w-3/4 bg-gray-100 text-black text-md    rounded py-1 pl-10 pr-4 focus:outline-none text-center "
+                  placeholder="Enter Number of Clicks"
+                  type="text"
+                  name="clicks"
+                  onChange={handleOnChange}
                 />
               </label>
               <label className="relative block mb-5 ">
                 <input
                   ref={toDate}
                   className="w-3/4 bg-gray-100 text-black text-md    rounded py-1 pl-10 pr-4 focus:outline-none text-center "
-                  placeholder="Enter To Date eg.(2021-09-19)"
+                  placeholder="Enter The Cost"
                   type="text"
-                />
-              </label>
-              <label className="relative block mb-5 ">
-                <input
-                  ref={toDate}
-                  className="w-3/4 bg-gray-100 text-black text-md    rounded py-1 pl-10 pr-4 focus:outline-none text-center "
-                  placeholder="Enter To Date eg.(2021-09-19)"
-                  type="text"
-                />
-              </label>
-              <label className="relative block mb-5 ">
-                <input
-                  ref={toDate}
-                  className="w-3/4 bg-gray-100 text-black text-md    rounded py-1 pl-10 pr-4 focus:outline-none text-center "
-                  placeholder="Enter To Date eg.(2021-09-19)"
-                  type="text"
+                  name="cost"
+                  onChange={handleOnChange}
                 />
               </label>
               <h1
                 className="bg-green-500 inline  p-2 px-10 font-bold rounded "
-                onClick={handleSubmit}
+                onClick={handleRegister}
               >
-                Search
+                Register New Data
               </h1>
             </form>
           </div>
@@ -196,6 +186,11 @@ function Home() {
         return (
           <DataRow
             key={index + v.date}
+            date={v.date}
+            views={v.views}
+            clicks={v.clicks}
+            cpc={v.cpc}
+            cpm={v.cpm}
             color={`${index % 2 === 0 ? "bg-red-500" : "bg-gray-800"}`}
           />
         );
