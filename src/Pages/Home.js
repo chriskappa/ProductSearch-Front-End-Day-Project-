@@ -2,6 +2,7 @@ import axios from "axios";
 import React, { useRef, useState, useEffect } from "react";
 import { apiLink, registerPost, resetData } from "../Requests.js/requestFile";
 import DataRow from "./Components/DataRow";
+import NavBar from "./Components/NavBar";
 import SearchForm from "./Components/SearchForm";
 
 function Home() {
@@ -107,6 +108,7 @@ function Home() {
   }, []);
   return (
     <div>
+      <NavBar />
       {/* Start of Banner Section */}
       <div className="banner">
         <div className="banner-text">
