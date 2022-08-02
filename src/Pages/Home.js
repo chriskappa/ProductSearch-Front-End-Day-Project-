@@ -107,14 +107,17 @@ function Home() {
   }, []);
   return (
     <div>
+      {/* Start of Banner Section */}
       <div className="banner">
         <div className="banner-text">
           <div className="input w-screen flex justify-center items-center ">
+            {/* Left Search Form */}
             <SearchForm
               fromDate={fromDate}
               handleSubmit={handleSubmit}
               toDate={toDate}
             />
+            {/* End Left Search Form */}
             <form className="w-1/2 " onSubmit={handleSubmit}>
               <label className="relative block mb-5 ">
                 <input
@@ -171,6 +174,7 @@ function Home() {
           </div>
         </div>
       </div>
+      {/* End of Banner Section */}
       {data.map((v, index) => {
         return (
           <DataRow
