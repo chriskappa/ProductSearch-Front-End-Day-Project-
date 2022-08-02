@@ -1,5 +1,5 @@
 import React from "react";
-
+import { Link } from "react-router-dom";
 function SearchForm({ handleSubmit, fromDate, toDate }) {
   return (
     <form className="w-1/2 " onSubmit={handleSubmit}>
@@ -45,6 +45,15 @@ function SearchForm({ handleSubmit, fromDate, toDate }) {
       >
         Search
       </h1>
+      <button class="mt-5">
+        <a class="relative inline-block text-sm font-medium text-white group active:text-orange-500 focus:outline-none focus:ring">
+          <span class="absolute inset-0 transition-transform translate-x-0.5 translate-y-0.5 bg-white group-hover:translate-y-0 group-hover:translate-x-0"></span>
+
+          <span class="relative block px-8 py-3 bg-[#1A2238] border border-current ml-2 rounded">
+            <Link to="/testpage">Test Navigation</Link>
+          </span>
+        </a>
+      </button>
     </form>
   );
 }
