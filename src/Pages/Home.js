@@ -21,6 +21,7 @@ function Home() {
     return true;
   };
   const handleSubmit = () => {
+    // if one of dates is not on correct format  eg.(2020-05-10) show alert
     if (!isValidDate(fromDate.current.value, toDate.current.value))
       return alert("Please Enter Two Valid Dates");
 
@@ -48,6 +49,7 @@ function Home() {
   };
 
   const handleOnChange = (e) => {
+    // Function to handle all the register inputs at once
     setPostObject((prev) => ({ ...prev, [e.target.name]: e.target.value }));
   };
 
@@ -61,11 +63,12 @@ function Home() {
   };
 
   const handleRegister = () => {
-    console.log(postObject);
-
+    // After checking that the object is valid and has proper key/values and the dates exist on the object then register the post
     if (isValidObject(postObject) && !isNaN(Date.parse(postObject.date))) {
       registerPost(postObject)
         .then((res) => {
+          // After sucesfull post add the new post to data array in order to update the ui with latest data
+          // Also calculate cpc and cpm on the go
           setData((prev) => [
             {
               ...postObject,
@@ -81,12 +84,16 @@ function Home() {
     } else {
       alert("Please Check Your Inputs");
     }
-    // const isValid = values.map(objectValue => )
   };
 
   const handleDataReset = () => {
-    resetData().then((res) => setData([]));
+    // Use resetData function to delete the posts from mongoose and then delete the data from state for real time update
+    resetData()
+      .then((res) => setData([]))
+      .catch((error) => console.log(`Something went wrong :${error}`));
   };
+
+  // Fetch Data on first component mount
   useEffect(() => {
     fetchData();
   }, []);
@@ -145,6 +152,7 @@ function Home() {
                   className="w-3/4 bg-gray-100 text-black text-md    rounded py-1 pl-10 pr-4 focus:outline-none text-center "
                   placeholder="Enter Date "
                   name="date"
+                  required
                   onChange={handleOnChange}
                 />
               </label>
@@ -152,8 +160,9 @@ function Home() {
                 <input
                   className="w-3/4 bg-gray-100 text-black text-md    rounded py-1 pl-10 pr-4 focus:outline-none text-center "
                   placeholder="Enter Number of Views"
-                  type="text"
+                  type="Number"
                   name="views"
+                  required
                   onChange={handleOnChange}
                 />
               </label>
@@ -161,8 +170,9 @@ function Home() {
                 <input
                   className="w-3/4 bg-gray-100 text-black text-md    rounded py-1 pl-10 pr-4 focus:outline-none text-center "
                   placeholder="Enter Number of Clicks"
-                  type="text"
+                  type="number"
                   name="clicks"
+                  required
                   onChange={handleOnChange}
                 />
               </label>
@@ -170,8 +180,9 @@ function Home() {
                 <input
                   className="w-3/4 bg-gray-100 text-black text-md    rounded py-1 pl-10 pr-4 focus:outline-none text-center "
                   placeholder="Enter The Cost"
-                  type="text"
+                  type="number"
                   name="cost"
+                  required
                   onChange={handleOnChange}
                 />
               </label>
