@@ -1,7 +1,6 @@
 ## Installation
 
 This document has the instruction to run this Web Application**.
-
 - Last Update: <b>2022/08/02
 
 ### Front-End Instruction 
